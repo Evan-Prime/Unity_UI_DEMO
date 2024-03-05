@@ -12,11 +12,18 @@ public class UI_Manager : MonoBehaviour
     private int resetValue = -999999999;
     private int maxValue = 999999999;
     private int minValue = 0;
+    private bool toggledOff = true;
+    [SerializeField] private GameObject toggleImage;
+    [SerializeField] private GameObject toggleShowText;
+    [SerializeField] private GameObject toggleHideText;
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private InputField userInput;
+    [SerializeField] private TMP_Text slimeNameText;
 
     private void Awake()
     {
         scoreText.text = "Score: " + startingValue;
+        ImageToggle();
     }
 
     public void ScoreUpdate(int newValue)
@@ -42,9 +49,42 @@ public class UI_Manager : MonoBehaviour
         scoreText.text = "Score: " + value;
     }
 
+    public void ScoreRandom()
+    {
+        int randomValue;
+        randomValue = Random.Range(maxValue, resetValue);
+
+        ScoreUpdate(randomValue);
+    }
+
+    public void ImageToggle()
+    {
+        if(toggledOff == true)
+        {
+            toggleImage.SetActive(true);
+            toggleHideText.SetActive(true);
+            toggleShowText.SetActive(false);
+            toggledOff = false;
+        }
+        else if (toggledOff == false)
+        {
+            toggleImage.SetActive(false);
+            toggleHideText.SetActive(false);
+            toggleShowText.SetActive(true);
+            toggledOff = true;
+        }
+        
+
+    }
+
     private void Update()
     {
-        scoreText.text = "Score: " + value;
+        
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            slimeNameText.text = userInput.text;
+            userInput = null;
+        }
     }
 
     public void QuitGame()
